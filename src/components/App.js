@@ -9,26 +9,57 @@ import HistoryTable from './HistoryTable';
 
 function App() {
 
-  const [ initialQuery, setInitialQuery ] = useState('');
+  const [ foodList, setFoodList ] = useState([]);
   const [ detailQuery, setDetailQuery ] = useState('');
   const [ quantityGrams, setQuantityGrams ] = useState('');
 
+  const appId = 'c8e7e023';
+  const appKey = '717eef2cdf01a4215328e3ccc428f6b4';
+  const headers = {
+    'x-app-id': appId,
+    'x-app-key': appKey
+  };
+  const responseErrorMsg = (xhr) => {
+    return 'Request status: ' + xhr.status + '\nStatus text: ' + xhr.statusText + '\n\n' + xhr.responseText;
+  }
 
-  // post search query
+
+  // make request for a list of foods,set state to that list
   const handleInitialSearch = () => {
-    const appId = 'c8e7e023';
-    const appKey = '717eef2cdf01a4215328e3ccc428f6b4';
-    console.log('Querying...');
-
     $.ajax({
-      headers: {
-        'x-app-id': appId,
-        'x-app-key': appKey
-      },
+      headers: headers,
       type: "GET",
       url: "https://trackapi.nutritionix.com/v2/search/instant?query=chicken breast",
-      success: function (response) {
+      success: response => {
+        const foodArray = response.common.map(food => {
+          return {
+            foodName: food.food_name,
+            photo: food.photo.thumb
+          }
+        });
+        setFoodList(foodArray);
+      },
+      error: xhr => {
+        console.log(responseErrorMsg(xhr));
+      }
+    });
+  }
+
+  // make request for the specific food selected by user
+  const analyzeFood = (foodName) => {
+    const query = {"query": foodName}
+
+    // using JSON.stringify(query) gets a 400 response. Unsure why.
+    $.ajax({
+      headers: headers,
+      type: "POST",
+      url: "https://trackapi.nutritionix.com/v2/natural/nutrients",
+      data: query,
+      success: response => {
         console.log(response);
+      },
+      error: xhr => {
+        console.log(responseErrorMsg(xhr));
       }
     });
   }
@@ -38,7 +69,7 @@ function App() {
       <Row>
         <Col xs={6}>
           <Search onClick={handleInitialSearch}/>
-          <SearchResultTable />
+          <SearchResultTable onClick={(foodName) => analyzeFood(foodName)} foodList={foodList}/>
         </Col>
         <Col xs={6}>
           <AminoAcidTable />
