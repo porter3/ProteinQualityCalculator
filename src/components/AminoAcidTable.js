@@ -59,6 +59,7 @@ function AminoAcidTable(props) {
                         <div>
                             <h5>{props.food.foodName}</h5>
                             <img 
+                                width="80"
                                 src={props.food.photo}
                                 alt={props.food.foodName}
                             />

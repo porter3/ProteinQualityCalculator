@@ -8,7 +8,8 @@ function SearchResult(props) {
         <ListGroup horizontal>
             <ListGroup.Item>{foodName}</ListGroup.Item>
             <ListGroup.Item>
-                <img
+                <img 
+                    width="80"
                     src={props.food.photo}
                     alt={props.food.foodName}
                 />

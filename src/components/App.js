@@ -28,48 +28,72 @@ function App() {
 
   // make request for a list of foods,set state to that list
   const handleInitialSearch = () => {
-    $.ajax({
-      headers: headers,
-      type: "GET",
-      url: "https://trackapi.nutritionix.com/v2/search/instant?query=chicken breast",
-      success: response => {
-        const foodArray = response.common.map(food => {
-          return {
-            foodName: food.food_name,
-            photo: food.photo.thumb
-          }
-        });
-        setFoodList(foodArray);
-      },
-      error: xhr => {
-        console.log(responseErrorMsg(xhr));
+    
+    const foodArray = [
+      {
+        foodName: 'chicken',
+        photo: 'https://photos.bigoven.com/recipe/hero/baked-garlic-brown-sugar-chicken-4.jpg?h=500&w=500'
       }
-    });
+    ];
+    setFoodList(foodArray);
   }
 
   // make request for the specific food selected by user
-  const analyzeFood = (foodName) => {
-    const query = {"query": foodName}
+  const analyzeFood = () => {
 
-    // using JSON.stringify(query) gets a 400 response. Unsure why.
-    $.ajax({
-      headers: headers,
-      type: "POST",
-      url: "https://trackapi.nutritionix.com/v2/natural/nutrients",
-      data: query,
-      success: response => {
-        console.log(response);
-        const foodInfo = response.foods[0];
+        const foodInfo = {
+          full_nutrients: [
+            {
+              attr_id: 501,
+              value: 2.0
+            },
+            {
+              attr_id: 502,
+              value: 2.0
+            },
+            {
+              attr_id: 503,
+              value: 2.0
+            },
+            {
+              attr_id: 504,
+              value: 2.0
+            },
+            {
+              attr_id: 505,
+              value: 2.0
+            },
+            {
+              attr_id: 506,
+              value: 2.0
+            },
+            {
+              attr_id: 507,
+              value: 2.0
+            },
+            {
+              attr_id: 508,
+              value: 2.0
+            },
+            {
+              attr_id: 509,
+              value: 2.0
+            },
+            {
+              attr_id: 510,
+              value: 2.0
+            },
+            {
+              attr_id: 512,
+              value: 2.0
+            }
+          ]
+        };
         setFood({
-          totalProtein: foodInfo.nf_protein,
-          photo: foodInfo.photo.thumb
+          totalProtein: 50,
+          photo: 'https://photos.bigoven.com/recipe/hero/baked-garlic-brown-sugar-chicken-4.jpg?h=500&w=500'
         });
         setFoodDetails(foodInfo.full_nutrients);
-      },
-      error: xhr => {
-        console.log(responseErrorMsg(xhr));
-      }
-    });
   }
 
   return (
