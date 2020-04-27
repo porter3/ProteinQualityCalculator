@@ -9,7 +9,10 @@ import HistoryTable from './HistoryTable';
 
 function App() {
 
+  console.log('App rendering');
+
   const [ foodList, setFoodList ] = useState([]);
+  const [ food, setFood ] = useState({});
   const [ foodDetails, setFoodDetails ] = useState([]);
 
   const appId = 'c8e7e023';
@@ -55,7 +58,13 @@ function App() {
       url: "https://trackapi.nutritionix.com/v2/natural/nutrients",
       data: query,
       success: response => {
-        setFoodDetails(response.foods[0].full_nutrients);
+        console.log(response);
+        const foodInfo = response.foods[0];
+        setFood({
+          totalProtein: foodInfo.nf_protein,
+          photo: foodInfo.photo.thumb
+        });
+        setFoodDetails(foodInfo.full_nutrients);
       },
       error: xhr => {
         console.log(responseErrorMsg(xhr));
@@ -66,12 +75,12 @@ function App() {
   return (
     <Container>
       <Row>
-        <Col xs={6}>
+        <Col md={6}>
           <Search onClick={handleInitialSearch} />
           <SearchResultTable onClick={(foodName) => analyzeFood(foodName)} foodList={foodList} />
         </Col>
-        <Col xs={6}>
-          <AminoAcidTable foodDetails={foodDetails} />
+        <Col md={6}>
+          <AminoAcidTable food={food} foodDetails={foodDetails} />
           <HistoryTable />
         </Col>
       </Row>

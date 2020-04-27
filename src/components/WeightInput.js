@@ -10,9 +10,10 @@ function WeightInput(props) {
     return (
         <Form>
             <Form.Group>
-                <Form.Control type="number" placeholder={`Enter weight (${unit})`}></Form.Control>
+                <Form.Control onChange={props.onChange} type="number" placeholder={`Enter weight (${unit})`}></Form.Control>
                 <Button
                 type="button"
+                onClick={props.onClick}
                 >
                 Calculate
                 </Button>

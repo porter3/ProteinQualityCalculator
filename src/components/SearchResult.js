@@ -10,7 +10,7 @@ function SearchResult(props) {
             <ListGroup.Item>
                 <img
                     src={props.food.photo}
-                    alt={foodName}
+                    alt={props.food.foodName}
                 />
             </ListGroup.Item>
             <ListGroup.Item>

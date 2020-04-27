@@ -1,5 +1,7 @@
 function mapAminoAcids(foodDetails) {
     let grams, name;
+
+    // maps nutrients to an array, then filters them if their name is empty
     return foodDetails.map(nutrient => {
         grams = nutrient.value;
         name = '';
