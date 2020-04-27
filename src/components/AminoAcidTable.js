@@ -2,13 +2,13 @@ import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 import WeightInput from './WeightInput';
 import AminoAcidGraph from './AminoAcidGraph';
-import mapAminoAcids from './helpers/mapAminoAcids';
 
 
 
 function AminoAcidTable(props) {
+    console.log('AminoAcidTable rendering');
     
-    const aminoAcids = mapAminoAcids(props.foodDetails);
+
     const aminoAcidList = unit => {
         
         /*
@@ -16,7 +16,7 @@ function AminoAcidTable(props) {
         to use in the future. Will stay hardcoded as grams for now.
         */
 
-        return aminoAcids.map((aa) => {
+        return props.aminoDetails.map((aa) => {
             return (
                 <tr key={aa.name}>
                     <td>{aa.name}</td>
@@ -25,47 +25,21 @@ function AminoAcidTable(props) {
             );
         });
     }
-    console.log('aa table rendering');
 
-    const [ weight, setWeight ] = useState(props.foodDetails.totalProtein);
-    const [ calculatedAminoAmounts, setCalculatedAminoAmounts ] = useState(aminoAcids);
-
-    // use grams input to convert amino acid amounts
-    const handleCalculation = () => {
-        // factor is equal to the grams input divided by the initial serving size in grams 
-        const factor = weight / props.food.totalProtein;
-        console.log('grams: ', weight);
-        console.log('factor: ', factor);
-        const modifiedAminoAmounts = aminoAcids.map((amino) => {
-            const calculatedGrams = amino.grams * factor;
-            return ({
-                grams: calculatedGrams,
-                name: amino.name
-            });
-        });
-        setCalculatedAminoAmounts(modifiedAminoAmounts);
-    };
-
-    const handleChange = (event) => {
-        console.dir(event.target.value);
-        setWeight(event.target.value);
-    };
+    const totalProteinHeader =  <h4>Total Protein: {props.food.totalProtein}g</h4>;
 
     return (
         <>
             {props.food.totalProtein &&
                 <>
-                    <WeightInput onChange={handleChange} onClick={() => handleCalculation()} />
+                    <WeightInput
+                    onChange={(e) => props.onChange(e)}
+                    onClick={props.onClick}
+                    weight={props.weight}
+                    />
                         <div>
-                            <h5>{props.food.foodName}</h5>
-                            <img 
-                                width="80"
-                                src={props.food.photo}
-                                alt={props.food.foodName}
-                            />
-                            <h4>
-                                Total Protein: {props.food.totalProtein}g
-                            </h4>
+                            <h5>{props.food.name} ({props.food.weight}g)</h5>
+                            {totalProteinHeader}
                         </div>
                     <Table>
                         <tbody>
@@ -78,7 +52,7 @@ function AminoAcidTable(props) {
                             {aminoAcidList()}
                         </tbody>
                     </Table>
-                    <AminoAcidGraph aminoAcids={aminoAcids} />
+                    <AminoAcidGraph aminoAcids={props.aminoDetails} />
                 </>
             }
         </>

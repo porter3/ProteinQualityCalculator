@@ -3,6 +3,7 @@ import { Button, Form } from 'react-bootstrap';
 
 
 function Search(props) {
+    console.log('Search rendering');
 
     return (
         <Form>

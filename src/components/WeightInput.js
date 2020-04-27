@@ -3,6 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 
 
 function WeightInput(props) {
+    console.log('WeightInput rendering');
 
     // hardcoded unit for now, will change to allow a selection
     const unit = 'grams';
@@ -11,6 +12,7 @@ function WeightInput(props) {
         <Form>
             <Form.Group>
                 <Form.Control onChange={props.onChange} type="number" placeholder={`Enter weight (${unit})`}></Form.Control>
+                <Form.Text className="text-muted">Enter the total weight of the food in grams</Form.Text>
                 <Button
                 type="button"
                 onClick={props.onClick}

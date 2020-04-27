@@ -1,29 +1,24 @@
 import React, { useState } from 'react';
-import $ from 'jquery';
 import 'bootstrap/dist/css/bootstrap.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import Search from './Search';
 import SearchResultTable from './SearchResultTable';
 import AminoAcidTable from './AminoAcidTable';
 import HistoryTable from './HistoryTable';
+import mapAminoAcids from './helpers/mapAminoAcids';
+
 
 function App() {
-
   console.log('App rendering');
 
+  // initial search results
   const [ foodList, setFoodList ] = useState([]);
+  // a specific food's name, weight, protein in grams, and photo link
   const [ food, setFood ] = useState({});
-  const [ foodDetails, setFoodDetails ] = useState([]);
-
-  const appId = 'c8e7e023';
-  const appKey = '717eef2cdf01a4215328e3ccc428f6b4';
-  const headers = {
-    'x-app-id': appId,
-    'x-app-key': appKey
-  };
-  const responseErrorMsg = (xhr) => {
-    return 'Request status: ' + xhr.status + '\nStatus text: ' + xhr.statusText + '\n\n' + xhr.responseText;
-  }
+  // a specific food's amino acid details ([{grams: '', name: ''}])
+  const [ aminoDetails, setAminoDetails ] = useState([]);
+  // holds the weight input
+  const [ weight, setWeight ] = useState('');
 
 
   // make request for a list of foods,set state to that list
@@ -37,6 +32,12 @@ function App() {
     ];
     setFoodList(foodArray);
   }
+
+  // handle weight input changes
+  const handleChange = (event) => {
+    console.dir(event.target.value);
+    setWeight(event.target.value);
+};
 
   // make request for the specific food selected by user
   const analyzeFood = () => {
@@ -90,11 +91,39 @@ function App() {
           ]
         };
         setFood({
+          name: 'chicken',
+          weight: 100, // In master, this should be set to the weight property of foodInfo
           totalProtein: 50,
           photo: 'https://photos.bigoven.com/recipe/hero/baked-garlic-brown-sugar-chicken-4.jpg?h=500&w=500'
         });
-        setFoodDetails(foodInfo.full_nutrients);
+        setAminoDetails(mapAminoAcids(foodInfo.full_nutrients));
   }
+
+  const aminoAcids = mapAminoAcids(aminoDetails);
+
+  // use grams input to convert protein and amino acid amounts
+  const handleCalculation = (e) => {
+    // factor is equal to the grams input divided by the initial serving size in grams 
+    const factor = weight / food.weight;
+    console.log('FACTOR: ', factor);
+    const calculatedAminoAcids = aminoAcids.map((amino) => {
+        const calculatedGrams = amino.grams * factor;
+        return ({
+            grams: calculatedGrams,
+            name: amino.name
+        });
+    });
+    setAminoDetails(calculatedAminoAcids);
+    console.log('AMINO DETAILS: ', aminoDetails);
+
+    const calculatedProtein = food.totalProtein * factor;
+    setFood({
+      name: food.name,
+      weight: weight,
+      totalProtein: calculatedProtein,
+      photo: food.photo
+    });
+};
 
   return (
     <Container>
@@ -104,7 +133,11 @@ function App() {
           <SearchResultTable onClick={(foodName) => analyzeFood(foodName)} foodList={foodList} />
         </Col>
         <Col md={6}>
-          <AminoAcidTable food={food} foodDetails={foodDetails} />
+          <AminoAcidTable
+          food={food}
+          aminoDetails={aminoDetails}
+          onClick={(e) => handleCalculation(e)}
+          onChange={(e) => handleChange(e)} />
           <HistoryTable />
         </Col>
       </Row>
