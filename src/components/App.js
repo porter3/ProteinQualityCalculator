@@ -6,6 +6,7 @@ import SearchResultTable from './SearchResultTable';
 import AminoAcidTable from './AminoAcidTable';
 import HistoryTable from './HistoryTable';
 import mapAminoAcids from './helpers/mapAminoAcids';
+import capitalizeAllStringsAtStart from './helpers/capitalizeAllStringsAtStart';
 
 
 function App() {
@@ -26,7 +27,7 @@ function App() {
     
     const foodArray = [
       {
-        foodName: 'chicken',
+        foodName: capitalizeAllStringsAtStart('chicken breast'),
         photo: 'https://photos.bigoven.com/recipe/hero/baked-garlic-brown-sugar-chicken-4.jpg?h=500&w=500'
       }
     ];
@@ -91,7 +92,7 @@ function App() {
           ]
         };
         setFood({
-          name: 'chicken',
+          name: capitalizeAllStringsAtStart('chicken breast'), // unnecessaru method when hardcoding, but need to remember it normally
           weight: 100, // In master, this should be set to the weight property of foodInfo
           totalProtein: 50,
           photo: 'https://photos.bigoven.com/recipe/hero/baked-garlic-brown-sugar-chicken-4.jpg?h=500&w=500'
@@ -99,14 +100,15 @@ function App() {
         setAminoDetails(mapAminoAcids(foodInfo.full_nutrients));
   }
 
-  const aminoAcids = mapAminoAcids(aminoDetails);
+  // const aminoAcids = mapAminoAcids(aminoDetails);
+  console.log('AMINO DETAILS: ', aminoDetails);
 
   // use grams input to convert protein and amino acid amounts
   const handleCalculation = (e) => {
     // factor is equal to the grams input divided by the initial serving size in grams 
     const factor = weight / food.weight;
     console.log('FACTOR: ', factor);
-    const calculatedAminoAcids = aminoAcids.map((amino) => {
+    const calculatedAminoAcids = aminoDetails.map((amino) => {
         const calculatedGrams = amino.grams * factor;
         return ({
             grams: calculatedGrams,
@@ -114,7 +116,7 @@ function App() {
         });
     });
     setAminoDetails(calculatedAminoAcids);
-    console.log('AMINO DETAILS: ', aminoDetails);
+    console.log('CALCULATED AMINO DETAILS: ', calculatedAminoAcids);
 
     const calculatedProtein = food.totalProtein * factor;
     setFood({
@@ -128,11 +130,11 @@ function App() {
   return (
     <Container>
       <Row>
-        <Col md={6}>
+        <Col lg={6}>
           <Search onClick={handleInitialSearch} />
           <SearchResultTable onClick={(foodName) => analyzeFood(foodName)} foodList={foodList} />
         </Col>
-        <Col md={6}>
+        <Col lg={6}>
           <AminoAcidTable
           food={food}
           aminoDetails={aminoDetails}

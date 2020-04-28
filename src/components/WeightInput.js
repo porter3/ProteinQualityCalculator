@@ -16,6 +16,7 @@ function WeightInput(props) {
                 <Button
                 type="button"
                 onClick={props.onClick}
+                // onClick={() => console.log("you clicked me!!")}
                 >
                 Calculate
                 </Button>

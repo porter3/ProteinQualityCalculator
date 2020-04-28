@@ -15,8 +15,8 @@ function SearchResult(props) {
                 />
             </ListGroup.Item>
             <ListGroup.Item>
-                <Button
-                    onClick={props.onClick}
+                <Button  onClick={props.onClick}
+                  
                     type="button"
                     variant="outline-dark">
                     Analyze
