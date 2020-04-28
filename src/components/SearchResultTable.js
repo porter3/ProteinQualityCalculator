@@ -4,7 +4,6 @@ import SearchResult from './SearchResult';
 
 
 function SearchResultTable(props) {
-    console.log('SearchResultTable rendering');
 
     const foodListItems = props.foodList.map((food) => {
         return (
@@ -17,9 +16,9 @@ function SearchResultTable(props) {
     });
 
     return (
-        <ul>
+        <>
             {foodListItems}
-        </ul>
+        </>
     );
 }
 

@@ -1,0 +1,9 @@
+.booty {
+    /* margin-top: 18%; */
+}
+
+.parent {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

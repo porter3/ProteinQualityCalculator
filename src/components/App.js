@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css';
+import './css/app.css';
+import './css/proteinQualityCalculator.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import Search from './Search';
 import SearchResultTable from './SearchResultTable';
 import AminoAcidTable from './AminoAcidTable';
 import HistoryTable from './HistoryTable';
+import AminoAcidGraph from './AminoAcidGraph';
 import mapAminoAcids from './helpers/mapAminoAcids';
 import capitalizeAllStringsAtStart from './helpers/capitalizeAllStringsAtStart';
 
 
 function App() {
-  console.log('App rendering');
 
   // initial search results
   const [ foodList, setFoodList ] = useState([]);
@@ -36,7 +38,6 @@ function App() {
 
   // handle weight input changes
   const handleChange = (event) => {
-    console.dir(event.target.value);
     setWeight(event.target.value);
 };
 
@@ -100,9 +101,6 @@ function App() {
         setAminoDetails(mapAminoAcids(foodInfo.full_nutrients));
   }
 
-  // const aminoAcids = mapAminoAcids(aminoDetails);
-  console.log('AMINO DETAILS: ', aminoDetails);
-
   // use grams input to convert protein and amino acid amounts
   const handleCalculation = (e) => {
     // factor is equal to the grams input divided by the initial serving size in grams 
@@ -116,7 +114,6 @@ function App() {
         });
     });
     setAminoDetails(calculatedAminoAcids);
-    console.log('CALCULATED AMINO DETAILS: ', calculatedAminoAcids);
 
     const calculatedProtein = food.totalProtein * factor;
     setFood({
@@ -128,13 +125,16 @@ function App() {
 };
 
   return (
-    <Container>
+    <Container className="app">
       <Row>
-        <Col lg={6}>
+        <Col lg={4}>
+        <div className="border border-primary">
           <Search onClick={handleInitialSearch} />
+          <hr />
           <SearchResultTable onClick={(foodName) => analyzeFood(foodName)} foodList={foodList} />
+        </div>
         </Col>
-        <Col lg={6}>
+        <Col lg={4}>
           <AminoAcidTable
           food={food}
           aminoDetails={aminoDetails}
@@ -142,6 +142,11 @@ function App() {
           onChange={(e) => handleChange(e)} />
           <HistoryTable />
         </Col>
+        {aminoDetails.length !== 0 &&
+          <Col lg={4}>
+            <AminoAcidGraph aminoAcids={aminoDetails} />
+          </Col>
+        }
       </Row>
     </Container>
     

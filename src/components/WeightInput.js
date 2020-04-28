@@ -3,7 +3,6 @@ import { Form, Button } from 'react-bootstrap';
 
 
 function WeightInput(props) {
-    console.log('WeightInput rendering');
 
     // hardcoded unit for now, will change to allow a selection
     const unit = 'grams';
@@ -16,7 +15,6 @@ function WeightInput(props) {
                 <Button
                 type="button"
                 onClick={props.onClick}
-                // onClick={() => console.log("you clicked me!!")}
                 >
                 Calculate
                 </Button>

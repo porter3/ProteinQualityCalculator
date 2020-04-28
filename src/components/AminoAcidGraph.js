@@ -16,7 +16,7 @@ function AminoAcidGraph(props) {
         '#DC7633', // orange
         '#D47FD5', // pink
         '#34495E', // charcoal
-        '#641E16', // dark red/burgundy
+        '#641E16', // burgundy
         '#154360' // navy blue
     ];
     const data = {
@@ -27,13 +27,17 @@ function AminoAcidGraph(props) {
         labels: labels
     };
     const options = {
+        maintainAspectRatio: false,
         legend: {
-            position: 'left'
+            display: false
         }
     };
 
     return (
-        <Polar data={data} options={options} />
+        <Polar data={data}
+        options={options}
+        height={80}
+        />
     );
 }
 

@@ -6,8 +6,6 @@ import AminoAcidGraph from './AminoAcidGraph';
 
 
 function AminoAcidTable(props) {
-    console.log('AminoAcidTable rendering');
-    
 
     const aminoAcidList = unit => {
         /*
@@ -54,7 +52,6 @@ function AminoAcidTable(props) {
                             {aminoAcidList()}
                         </tbody>
                     </Table>
-                    <AminoAcidGraph aminoAcids={props.aminoDetails} />
                 </>
             }
         </>
