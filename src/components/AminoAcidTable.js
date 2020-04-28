@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Table } from 'react-bootstrap';
 import WeightInput from './WeightInput';
-import AminoAcidGraph from './AminoAcidGraph';
 
 
 
@@ -25,31 +24,32 @@ function AminoAcidTable(props) {
         });
     }
 
-    const totalProteinHeader =  <h4>Total Protein: {props.food.totalProtein}g</h4>;
+    const aaList = aminoAcidList();
 
     return (
         <>
             {props.food.totalProtein &&
                 <>
                     <WeightInput
-                    onChange={(e) => props.onChange(e)}
-                    onClick={props.onClick}
-                    weight={props.weight}
+                        onChange={props.onChange}
+                        onClick={props.onClick}
+                        weight={props.weight}
                     />
+                    <hr />
                         <div>
                             <h5>{props.food.name} ({props.food.weight}g)</h5>
-                            {totalProteinHeader}
+                            <h4>Total Protein: {props.food.totalProtein}g</h4>
                         </div>
                     <Table>
                         <tbody>
-                            {aminoAcidList().length !== 0 &&
+                            {aaList.length !== 0 &&
                                 <tr>
                                     <th>Amino Acid</th>
                                     <th>Quantity (g)</th>
                                     <th>Percentage</th>
                                 </tr>
                             }
-                            {aminoAcidList()}
+                            {aaList}
                         </tbody>
                     </Table>
                 </>

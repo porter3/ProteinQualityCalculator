@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import $ from 'jquery';
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/app.css';
 import './css/proteinQualityCalculator.css';
@@ -14,6 +15,8 @@ import capitalizeAllStringsAtStart from './helpers/capitalizeAllStringsAtStart';
 
 function App() {
 
+  // initial query
+  const [ initialQuery, setInitialQuery ] = useState('');
   // initial search results
   const [ foodList, setFoodList ] = useState([]);
   // a specific food's name, weight, protein in grams, and photo link
@@ -23,89 +26,74 @@ function App() {
   // holds the weight input
   const [ weight, setWeight ] = useState('');
 
-
-  // make request for a list of foods,set state to that list
-  const handleInitialSearch = () => {
-    
-    const foodArray = [
-      {
-        foodName: capitalizeAllStringsAtStart('chicken breast'),
-        photo: 'https://photos.bigoven.com/recipe/hero/baked-garlic-brown-sugar-chicken-4.jpg?h=500&w=500'
-      }
-    ];
-    setFoodList(foodArray);
+  const appId = 'c8e7e023';
+  const appKey = '717eef2cdf01a4215328e3ccc428f6b4';
+  const headers = {
+    'x-app-id': appId,
+    'x-app-key': appKey
+  };
+  const responseErrorMsg = xhr => {
+    return 'Request status: ' + xhr.status + '\nStatus text: ' + xhr.statusText + '\n\n' + xhr.responseText;
   }
 
-  // handle weight input changes
-  const handleChange = (event) => {
-    setWeight(event.target.value);
+
+  // make request for a list of foods, set state to that list
+  const handleInitialSearch = () => {
+    $.ajax({
+      headers: headers,
+      type: "GET",
+      url: "https://trackapi.nutritionix.com/v2/search/instant?query=" + initialQuery,
+      success: response => {
+        const foodArray = response.common.map(food => {
+          return {
+            foodName: capitalizeAllStringsAtStart(food.food_name),
+            photo: food.photo.thumb
+          }
+        });
+        setFoodList(foodArray);
+      },
+      error: xhr => {
+        console.log(responseErrorMsg(xhr));
+      }
+    });
+  }
+
+  // handle form input changes for both intial query and custom food weight
+  const handleChange = event => {
+    event.target.id === 'searchBox' ? setInitialQuery(event.target.value) : setWeight(event.target.value);
 };
 
   // make request for the specific food selected by user
-  const analyzeFood = () => {
+  const analyzeFood = foodName => {
+    const query = {"query": foodName}
+    console.log('query: ', query);
 
-        const foodInfo = {
-          full_nutrients: [
-            {
-              attr_id: 501,
-              value: 2.0
-            },
-            {
-              attr_id: 502,
-              value: 2.0
-            },
-            {
-              attr_id: 503,
-              value: 2.0
-            },
-            {
-              attr_id: 504,
-              value: 2.0
-            },
-            {
-              attr_id: 505,
-              value: 2.0
-            },
-            {
-              attr_id: 506,
-              value: 2.0
-            },
-            {
-              attr_id: 507,
-              value: 2.0
-            },
-            {
-              attr_id: 508,
-              value: 2.0
-            },
-            {
-              attr_id: 509,
-              value: 2.0
-            },
-            {
-              attr_id: 510,
-              value: 2.0
-            },
-            {
-              attr_id: 512,
-              value: 2.0
-            }
-          ]
-        };
+    // using JSON.stringify(query) gets a 400 response. Unsure why.
+    $.ajax({
+      headers: headers,
+      type: "POST",
+      url: "https://trackapi.nutritionix.com/v2/natural/nutrients",
+      data: query,
+      success: response => {
+        const foodInfo = response.foods[0];
         setFood({
-          name: capitalizeAllStringsAtStart('chicken breast'), // unnecessaru method when hardcoding, but need to remember it normally
-          weight: 100, // In master, this should be set to the weight property of foodInfo
-          totalProtein: 50,
-          photo: 'https://photos.bigoven.com/recipe/hero/baked-garlic-brown-sugar-chicken-4.jpg?h=500&w=500'
+          name: capitalizeAllStringsAtStart(foodInfo.food_name),
+          weight: foodInfo.serving_weight_grams,
+          totalProtein: foodInfo.nf_protein,
+          photo: foodInfo.photo.thumb
         });
         setAminoDetails(mapAminoAcids(foodInfo.full_nutrients));
+      },
+      error: xhr => {
+        console.log(responseErrorMsg(xhr));
+      }
+    });
   }
 
   // use grams input to convert protein and amino acid amounts
-  const handleCalculation = (e) => {
+  const handleCalculation = () => {
     // factor is equal to the grams input divided by the initial serving size in grams 
     const factor = weight / food.weight;
-    console.log('FACTOR: ', factor);
     const calculatedAminoAcids = aminoDetails.map((amino) => {
         const calculatedGrams = amino.grams * factor;
         return ({
@@ -127,25 +115,30 @@ function App() {
   return (
     <Container className="app">
       <Row>
-        <Col lg={4}>
-        <div className="border border-primary">
-          <Search onClick={handleInitialSearch} />
+        <Col xl={4}>
+        <div>
+          <Search onClick={(e) => handleInitialSearch(e)} onChange={(e) => handleChange(e)} />
           <hr />
           <SearchResultTable onClick={(foodName) => analyzeFood(foodName)} foodList={foodList} />
         </div>
         </Col>
-        <Col lg={4}>
+        <Col xl={4}>
           <AminoAcidTable
           food={food}
           aminoDetails={aminoDetails}
-          onClick={(e) => handleCalculation(e)}
+          onClick={() => handleCalculation()}
           onChange={(e) => handleChange(e)} />
+          {
+            food.name && aminoDetails.length === 0 &&
+              <h5 style={{color: 'red'}}>Amino acid details not found for that item</h5>
+          }
           <HistoryTable />
         </Col>
-        {aminoDetails.length !== 0 &&
-          <Col lg={4}>
-            <AminoAcidGraph aminoAcids={aminoDetails} />
-          </Col>
+        {
+          aminoDetails.length !== 0 &&
+            <Col xl={4}>
+              <AminoAcidGraph aminoAcids={aminoDetails} />
+            </Col>
         }
       </Row>
     </Container>

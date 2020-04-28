@@ -8,17 +8,18 @@ function WeightInput(props) {
     const unit = 'grams';
 
     return (
-        <Form>
-            <Form.Group>
+        <Form inline>
                 <Form.Control onChange={props.onChange} type="number" placeholder={`Enter weight (${unit})`}></Form.Control>
-                <Form.Text className="text-muted">Enter the total weight of the food in grams</Form.Text>
                 <Button
-                type="button"
-                onClick={props.onClick}
+                    type="button"
+                    variant="outline-dark"
+                    onClick={props.onClick}
                 >
-                Calculate
+                    Calculate
                 </Button>
-            </Form.Group>
+                <Form.Text className="text-muted">
+                    Enter the total weight of the food in grams (optional)
+                </Form.Text>
         </Form>
     )
 }

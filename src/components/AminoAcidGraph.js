@@ -27,7 +27,7 @@ function AminoAcidGraph(props) {
         labels: labels
     };
     const options = {
-        maintainAspectRatio: false,
+        maintainAspectRatio: true,
         legend: {
             display: false
         }
@@ -37,6 +37,7 @@ function AminoAcidGraph(props) {
         <Polar data={data}
         options={options}
         height={80}
+        width={80}
         />
     );
 }
