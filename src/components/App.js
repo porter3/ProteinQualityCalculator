@@ -82,7 +82,7 @@ function App() {
           totalProtein: foodInfo.nf_protein,
           photo: foodInfo.photo.thumb
         });
-        setAminoDetails(mapAminoAcids(foodInfo.full_nutrients));
+        setAminoDetails(mapAminoAcids(foodInfo.full_nutrients, foodInfo.nf_protein));
       },
       error: xhr => {
         console.log(responseErrorMsg(xhr));
@@ -94,12 +94,10 @@ function App() {
   const handleCalculation = () => {
     // factor is equal to the grams input divided by the initial serving size in grams 
     const factor = weight / food.weight;
+    let calculatedGrams;
     const calculatedAminoAcids = aminoDetails.map((amino) => {
-        const calculatedGrams = amino.grams * factor;
-        return ({
-            grams: calculatedGrams,
-            name: amino.name
-        });
+        calculatedGrams = amino.grams * factor;
+        return Object.assign({}, amino, { grams: calculatedGrams });
     });
     setAminoDetails(calculatedAminoAcids);
 
