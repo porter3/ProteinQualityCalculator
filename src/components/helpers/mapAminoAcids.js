@@ -1,7 +1,6 @@
-function mapAminoAcids(foodDetails) {
+function mapAminoAcids(foodDetails, totalProtein) {
 
     let grams, name, relativeAmount;
-    const totalProtein = 30; // placeholder
 
     // maps nutrients to an array, then filters them if their name is empty
     return foodDetails.map(nutrient => {
@@ -83,24 +82,26 @@ Takes the amount of the amino acid, total protein of the food,
 and what percentage of the total protein is in line with USDA reommendations.
 Returns whether that value is very low, low, middle, high, or very high
 */
+
+// Does not return what's expected at the moment- all values are low/very low
 function getRelativeAmount(aminoQuantity, totalProtein, recommendationAvg) {
     const upperThreshold = recommendationAvg * 2;
     const percentageOfProtein = aminoQuantity / totalProtein;
     let relativeAmount;
     if (percentageOfProtein <= upperThreshold * .2) {
-        relativeAmount = 'very low';
+        relativeAmount = 'VERY LOW';
     }
     else if (percentageOfProtein <= upperThreshold * .4) {
-        relativeAmount = 'low';
+        relativeAmount = 'LOW';
     }
     else if (percentageOfProtein <= upperThreshold * .6) {
-        relativeAmount = 'middle';
+        relativeAmount = 'MIDDLE';
     }
     else if (percentageOfProtein <= upperThreshold * .8) {
-        relativeAmount = 'high';
+        relativeAmount = 'HIGH';
     }
     else {
-        relativeAmount = 'very high';
+        relativeAmount = 'VERY HIGH';
     }
     return relativeAmount;
 }
