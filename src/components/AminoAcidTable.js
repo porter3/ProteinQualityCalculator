@@ -14,11 +14,13 @@ function AminoAcidTable(props) {
 
         return props.aminoDetails.map((aa) => {
             const percentage = (aa.grams / props.food.totalProtein * 100).toFixed(2);
+            // relativeAmount function is buggy at the moment, still letting it display
             return (
                 <tr key={aa.name}>
                     <td>{aa.name}</td>
                     <td>{aa.grams}</td>
                     <td>{percentage}%</td>
+                    <td>{aa.relativeAmount}</td>
                 </tr>
             );
         });
