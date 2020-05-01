@@ -1,6 +1,7 @@
 import React from 'react';
 import { Table, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import WeightInput from './WeightInput';
+import getColorForRelativeAmount from './helpers/getColorForRelativeAmount';
 
 
 
@@ -16,7 +17,7 @@ function AminoAcidTable(props) {
             const percentage = (aa.grams / props.food.totalProtein * 100).toFixed(2);
             // relativeAmount function is buggy at the moment, still letting it display
             return (
-                <tr key={aa.name}>
+                <tr style={{backgroundColor: getColorForRelativeAmount(aa.relativeAmount)}} key={aa.name}>
                     <td>{aa.name}</td>
                     <td>{aa.grams}</td>
                     <td>{percentage}%</td>
