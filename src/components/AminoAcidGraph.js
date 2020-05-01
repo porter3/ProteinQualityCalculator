@@ -27,18 +27,20 @@ function AminoAcidGraph(props) {
         labels: labels
     };
     const options = {
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         legend: {
             display: false
         }
     };
 
     return (
-        <Polar data={data}
-        options={options}
-        height={80}
-        width={80}
-        />
+        <div style={{width: '500px'}}>
+            <Polar data={data}
+            options={options}
+            height={280}
+            width={280}
+            />
+        </div>
     );
 }
 
