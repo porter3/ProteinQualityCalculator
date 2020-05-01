@@ -1,5 +1,5 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
+import { Table, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import WeightInput from './WeightInput';
 
 
@@ -49,6 +49,15 @@ function AminoAcidTable(props) {
                                     <th>Amino Acid</th>
                                     <th>Quantity (g)</th>
                                     <th>Percentage</th>
+                                    <OverlayTrigger
+                                    placement="top"
+                                    overlay={
+                                        <Tooltip>
+                                            Determined by the percentage of one gram of protein the amino acid constitutes
+                                        </Tooltip>
+                                    }>
+                                    <th>Relative Amount</th>
+                                    </OverlayTrigger>
                                 </tr>
                             }
                             {aaList}
