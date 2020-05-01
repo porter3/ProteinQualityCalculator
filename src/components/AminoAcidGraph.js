@@ -1,5 +1,5 @@
 import React from 'react';
-import { Polar } from 'react-chartjs-2';
+import { Pie } from 'react-chartjs-2';
 
 
 function AminoAcidGraph(props) {
@@ -7,17 +7,17 @@ function AminoAcidGraph(props) {
     const aminoAmounts = props.aminoAcids.map(aminoAcid => aminoAcid.grams);
     const labels = props.aminoAcids.map(aminoAcid => aminoAcid.name);
     const colors = [
-        '#E74C3C', // red
-        '#884EA0', // purple
-        '#7FB3D5', // light blue
-        '#1ABC9C', // teal
-        '#27AE60', // green
-        '#F4D03F', // yellow
-        '#DC7633', // orange
-        '#D47FD5', // pink
-        '#34495E', // charcoal
-        '#641E16', // burgundy
-        '#154360' // navy blue
+        '#0037de',
+        '#625ae3',
+        '#8e7ee8',
+        '#b2a3ec',
+        '#d3c9ef',
+        '#f1f1f1',
+        '#f1cfce',
+        '#eeadad',
+        '#e88b8d',
+        '#df676e',
+        '#d43d51',
     ];
     const data = {
         datasets: [{
@@ -35,7 +35,7 @@ function AminoAcidGraph(props) {
 
     return (
         <div style={{width: '500px'}}>
-            <Polar data={data}
+            <Pie data={data}
             options={options}
             height={280}
             width={280}
