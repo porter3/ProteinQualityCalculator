@@ -1,3 +1,12 @@
+@font-face {
+    font-family: Quicksand;
+    src: url("fonts/Quicksand/static/Quicksand-Regular.ttf");
+}
+
+body {
+    font-family: Quicksand;
+}
+
 .app {
     margin-top: 50px;
 }
@@ -5,3 +14,4 @@
 #searchBox {
     width: 79%
 }
+
