@@ -94,10 +94,10 @@ function App() {
   const handleCalculation = () => {
     // factor is equal to the grams input divided by the initial serving size in grams 
     const factor = weight / food.weight;
-    let calculatedGrams;
+    let calculatedMg;
     const calculatedAminoAcids = aminoDetails.map((amino) => {
-        calculatedGrams = (amino.grams * factor).toFixed(2);
-        return Object.assign({}, amino, { grams: calculatedGrams });
+        calculatedMg = (amino.milligrams * factor).toFixed(1);
+        return Object.assign({}, amino, { milligrams: calculatedMg });
     });
     setAminoDetails(calculatedAminoAcids);
 

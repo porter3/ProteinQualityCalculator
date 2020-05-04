@@ -1,5 +1,8 @@
 import React from 'react';
-import { Table, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
+import ReactTooltip from 'react-tooltip';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import './css/AminoAcidTable.css';
 import WeightInput from './WeightInput';
 import getColorForRelativeAmount from './helpers/getColorForRelativeAmount';
@@ -50,15 +53,15 @@ function AminoAcidTable(props) {
                                     <th>Amino Acid</th>
                                     <th>Quantity (mg)</th>
                                     <th>Percentage</th>
-                                    <OverlayTrigger
-                                    placement="top"
-                                    overlay={
-                                        <Tooltip>
-                                            Determined by the percentage of one gram of protein the amino acid constitutes
-                                        </Tooltip>
-                                    }>
-                                    <th id="relativeAmountHeader">Relative Amount</th>
-                                    </OverlayTrigger>
+                                    <th>
+                                        Relative Amount
+                                        <FontAwesomeIcon
+                                            data-tip="Determined by the percentage<br />of one gram of protein<br />the amino acid constitutes"
+                                            data-multiline="true"
+                                            icon={faQuestionCircle}
+                                        />
+                                        <ReactTooltip />
+                                    </th>
                                 </tr>
                             }
                             {aaList}
