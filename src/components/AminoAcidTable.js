@@ -1,5 +1,6 @@
 import React from 'react';
 import { Table, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import './css/AminoAcidTable.css';
 import WeightInput from './WeightInput';
 import getColorForRelativeAmount from './helpers/getColorForRelativeAmount';
 
@@ -14,12 +15,11 @@ function AminoAcidTable(props) {
         */
 
         return props.aminoDetails.map((aa) => {
-            const percentage = (aa.grams / props.food.totalProtein * 100).toFixed(2);
-            // relativeAmount function is buggy at the moment, still letting it display
+            const percentage = (aa.milligrams / props.food.totalProtein / 10).toFixed(2);
             return (
                 <tr style={{backgroundColor: getColorForRelativeAmount(aa.relativeAmount)}} key={aa.name}>
                     <td>{aa.name}</td>
-                    <td>{aa.grams}</td>
+                    <td>{aa.milligrams}</td>
                     <td>{percentage}%</td>
                     <td>{aa.relativeAmount}</td>
                 </tr>
@@ -48,7 +48,7 @@ function AminoAcidTable(props) {
                             {aaList.length !== 0 &&
                                 <tr>
                                     <th>Amino Acid</th>
-                                    <th>Quantity (g)</th>
+                                    <th>Quantity (mg)</th>
                                     <th>Percentage</th>
                                     <OverlayTrigger
                                     placement="top"
@@ -57,7 +57,7 @@ function AminoAcidTable(props) {
                                             Determined by the percentage of one gram of protein the amino acid constitutes
                                         </Tooltip>
                                     }>
-                                    <th>Relative Amount</th>
+                                    <th id="relativeAmountHeader">Relative Amount</th>
                                     </OverlayTrigger>
                                 </tr>
                             }

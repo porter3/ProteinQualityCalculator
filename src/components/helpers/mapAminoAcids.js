@@ -1,33 +1,33 @@
 function mapAminoAcids(foodDetails, totalProtein) {
 
-    let grams, name, relativeAmount;
+    let milligrams, name, relativeAmount;
 
     // maps nutrients to an array, then filters them if their name is empty
     return foodDetails.map(nutrient => {
-        grams = nutrient.value;
+        milligrams = nutrient.value * 1000;
         name = '';
 
         switch (nutrient.attr_id) {
             // tryptophan
             case 501:
                 name = 'Tryptophan';
-                relativeAmount = getRelativeAmount(grams, totalProtein, .007);
+                relativeAmount = getRelativeAmount(milligrams, totalProtein, 7);
                 break;
             case 502:
                 name ='Threonine';
-                relativeAmount = getRelativeAmount(grams, totalProtein, .027);
+                relativeAmount = getRelativeAmount(milligrams, totalProtein, 27);
                 break;
             case 503:
                 name = 'Isoleucine';
-                relativeAmount = getRelativeAmount(grams, totalProtein, .025);
+                relativeAmount = getRelativeAmount(milligrams, totalProtein, 25);
                 break;
             case 504:
                 name = 'Leucine';
-                relativeAmount = getRelativeAmount(grams, totalProtein, .055);
+                relativeAmount = getRelativeAmount(milligrams, totalProtein, 55);
                 break;
             case 505:
                 name = 'Lysine';
-                relativeAmount = getRelativeAmount(grams, totalProtein, .051);
+                relativeAmount = getRelativeAmount(milligrams, totalProtein, 51);
                 break;
             /*
             Methionine/Cysteine and Phenylalanine/Tyrosine
@@ -35,35 +35,35 @@ function mapAminoAcids(foodDetails, totalProtein) {
             */
             case 506:
                 name = 'Methionine';
-                relativeAmount = getRelativeAmount(grams, totalProtein, .0125);
+                relativeAmount = getRelativeAmount(milligrams, totalProtein, 12.5);
                 break;
             case 507:
                 name = 'Cysteine';
-                relativeAmount = getRelativeAmount(grams, totalProtein, .0125);
+                relativeAmount = getRelativeAmount(milligrams, totalProtein, 12.5);
                 break;
             case 508:
                 name = 'Phenylalanine';
-                relativeAmount = getRelativeAmount(grams, totalProtein, .0235);
+                relativeAmount = getRelativeAmount(milligrams, totalProtein, 23.5);
                 break;
             case 509:
                 name = 'Tyrosine';
-                relativeAmount = getRelativeAmount(grams, totalProtein, .0235);
+                relativeAmount = getRelativeAmount(milligrams, totalProtein, 23.5);
                 break;
             case 510:
                 name = 'Valine';
-                relativeAmount = getRelativeAmount(grams, totalProtein, .032);
+                relativeAmount = getRelativeAmount(milligrams, totalProtein, 32);
                 break;
             // 511 is Arginine, leaving out on purpose
             case 512:
                 name = 'Histidine';
-                relativeAmount = getRelativeAmount(grams, totalProtein, .018);
+                relativeAmount = getRelativeAmount(milligrams, totalProtein, 18);
                 break;
             default:
                 break;
         }
 
         return ({
-            grams: grams,
+            milligrams: milligrams,
             name: name,
             relativeAmount: relativeAmount
         });

@@ -96,7 +96,7 @@ function App() {
     const factor = weight / food.weight;
     let calculatedGrams;
     const calculatedAminoAcids = aminoDetails.map((amino) => {
-        calculatedGrams = amino.grams * factor;
+        calculatedGrams = (amino.grams * factor).toFixed(2);
         return Object.assign({}, amino, { grams: calculatedGrams });
     });
     setAminoDetails(calculatedAminoAcids);

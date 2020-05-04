@@ -4,7 +4,7 @@ import { Pie } from 'react-chartjs-2';
 
 function AminoAcidGraph(props) {
 
-    const aminoAmounts = props.aminoAcids.map(aminoAcid => aminoAcid.grams);
+    const aminoAmounts = props.aminoAcids.map(aminoAcid => aminoAcid.milligrams);
     const labels = props.aminoAcids.map(aminoAcid => aminoAcid.name);
     const colors = [
         '#0037de',
