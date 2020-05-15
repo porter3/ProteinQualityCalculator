@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import $ from 'jquery';
 import 'bootstrap/dist/css/bootstrap.css';
-import './css/app.css';
-import './css/proteinQualityCalculator.css';
+import '../css/app.css';
+import '../css/proteinQualityCalculator.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import Search from './Search';
 import SearchResultTable from './SearchResultTable';
 import AminoAcidTable from './AminoAcidTable';
 import HistoryTable from './HistoryTable';
 import AminoAcidGraph from './AminoAcidGraph';
-import mapAminoAcids from './helpers/mapAminoAcids';
-import capitalizeAllStringsAtStart from './helpers/capitalizeAllStringsAtStart';
+import mapAminoAcids from '../helpers/mapAminoAcids';
+import capitalizeAllStringsAtStart from '../helpers/capitalizeAllStringsAtStart';
 
 
 function App() {

@@ -1,5 +1,5 @@
 import React from 'react';
-import './css/SearchResultTable.css' // unused at the moment
+import '../css/SearchResultTable.css' // unused at the moment
 import SearchResult from './SearchResult';
 
 

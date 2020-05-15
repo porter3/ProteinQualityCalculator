@@ -3,9 +3,9 @@ import { Table } from 'react-bootstrap';
 import ReactTooltip from 'react-tooltip';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
-import './css/AminoAcidTable.css';
+import '../css/AminoAcidTable.css';
 import WeightInput from './WeightInput';
-import getColorForRelativeAmount from './helpers/getColorForRelativeAmount';
+import getColorForRelativeAmount from '../helpers/getColorForRelativeAmount';
 
 
 

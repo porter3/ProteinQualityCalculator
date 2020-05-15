@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col, Button } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.css';
-import './css/searchResult.css';
+import '../css/searchResult.css';
 
 function SearchResult(props) {
     const foodName = props.food.foodName;
