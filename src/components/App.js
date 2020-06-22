@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import $ from 'jquery';
-import axios from 'axios';
+import axios from 'axios'
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/app.css';
 import './css/proteinQualityCalculator.css';
@@ -41,20 +40,23 @@ function App() {
   // make request for a list of foods, set state to that list
 
   const handleInitialSearch = () => {
-    axios.get('https://trackapi.nutritionix.com/v2/search/instant?query=' + initialQuery, null, headers)
-      .then(response => {
-        const foodArray = response.common.map(food => {
-          return {
-            foodName: capitalizeAllStringsAtStart(food.food_name),
-            photo: food.photo.thumb
-          }
-        });
-        setFoodList(foodArray);
-      })
-      .catch(error => {
+    axios({
+      method: 'get',
+      url: 'https://trackapi.nutritionix.com/v2/search/instant?query=' + initialQuery,
+      headers: headers
+    }).then(response => {
+      console.log(response)
+      const foodArray = response.data.common.map(food => {
+        return {
+          foodName: capitalizeAllStringsAtStart(food.food_name),
+          photo: food.photo.thumb
+        }
+      });
+      setFoodList(foodArray);
+    }).catch(error => {
         console.log(responseErrorMsg(error));
-      })
-  }
+    })
+}      
 
   // handle form input changes for both intial query and custom food weight
   const handleChange = event => {
@@ -64,28 +66,24 @@ function App() {
   // make request for the specific food selected by user
   const analyzeFood = foodName => {
     const query = {"query": foodName}
-    console.log('query: ', query);
 
-    // using JSON.stringify(query) gets a 400 response. Unsure why.
-    $.ajax({
-      headers: headers,
-      type: "POST",
-      url: "https://trackapi.nutritionix.com/v2/natural/nutrients",
+    axios({
+      method: 'post',
+      url: 'https://trackapi.nutritionix.com/v2/natural/nutrients',
       data: query,
-      success: response => {
-        const foodInfo = response.foods[0];
+      headers: headers
+    }).then(response => {
+      const foodInfo = response.data.foods[0];
         setFood({
           name: capitalizeAllStringsAtStart(foodInfo.food_name),
           weight: foodInfo.serving_weight_grams,
           totalProtein: foodInfo.nf_protein,
           photo: foodInfo.photo.thumb
-        });
-        setAminoDetails(mapAminoAcids(foodInfo.full_nutrients, foodInfo.nf_protein));
-      },
-      error: xhr => {
-        console.log(responseErrorMsg(xhr));
-      }
-    });
+      });
+      setAminoDetails(mapAminoAcids(foodInfo.full_nutrients, foodInfo.nf_protein));
+    }).catch(error => {
+        console.log(responseErrorMsg(error));
+    })
   }
 
   // use grams input to convert protein and amino acid amounts
