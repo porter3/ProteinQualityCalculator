@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import $ from 'jquery';
+import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.css';
 import './css/app.css';
 import './css/proteinQualityCalculator.css';
@@ -38,12 +39,10 @@ function App() {
 
 
   // make request for a list of foods, set state to that list
+
   const handleInitialSearch = () => {
-    $.ajax({
-      headers: headers,
-      type: "GET",
-      url: "https://trackapi.nutritionix.com/v2/search/instant?query=" + initialQuery,
-      success: response => {
+    axios.get('https://trackapi.nutritionix.com/v2/search/instant?query=' + initialQuery, null, headers)
+      .then(response => {
         const foodArray = response.common.map(food => {
           return {
             foodName: capitalizeAllStringsAtStart(food.food_name),
@@ -51,11 +50,10 @@ function App() {
           }
         });
         setFoodList(foodArray);
-      },
-      error: xhr => {
-        console.log(responseErrorMsg(xhr));
-      }
-    });
+      })
+      .catch(error => {
+        console.log(responseErrorMsg(error));
+      })
   }
 
   // handle form input changes for both intial query and custom food weight
